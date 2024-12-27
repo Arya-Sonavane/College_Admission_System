@@ -68,7 +68,7 @@ public class CollegeAdmissionSystem {  //main class
     	    	System.out.println("Login Done!"+" "+Userrole);
     	    	if(Userrole.equalsIgnoreCase("admin"))
     	    	{
-    	    		System.out.println("Admin panel!");
+    	    		System.out.println("Admin panel!");//admin panel
     	    		//add staff
     	    		//update staff
     	    		//delete staff
