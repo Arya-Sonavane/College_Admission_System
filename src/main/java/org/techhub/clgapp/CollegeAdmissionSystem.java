@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 import org.techhub.model.*;
 
-public class CollegeAdmissionSystem {
+public class CollegeAdmissionSystem {  //main class
 
 	public static void main(String[] args) {
 		
