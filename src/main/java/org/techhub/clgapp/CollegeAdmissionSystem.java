@@ -1,5 +1,7 @@
 package org.techhub.clgapp;
 import org.techhub.service.*;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.techhub.model.*;
 import org.techhub.repository.StudentRepositoryImpl;
 
@@ -11,7 +13,22 @@ import org.techhub.model.*;
 
 public class CollegeAdmissionSystem {  //main class
 
+	private static Logger logger=Logger.getLogger(CollegeAdmissionSystem.class);
+	static
+	{
+		try
+		{
+			PropertyConfigurator.configure("src/main/resources/log4j.properties");
+			logger.info("CollegeAdmissionSystem:Log4j setUp ready");
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			logger.info("CollegeAdmissionSystem:Log4j problem setUp ready");
+		}
+	}
 	public static void main(String[] args) {
+		
+		
 		
 	StudentService stud=new StudentServiceImpl();
 	userService suser=new userServiceImpl();
@@ -21,6 +38,7 @@ public class CollegeAdmissionSystem {  //main class
 	
 	boolean b;
 	
+	logger.info("Application started");
 	System.out.println("Welcome to College Admission System Application!");
 	Scanner sobj=new Scanner(System.in);
 	do
@@ -32,10 +50,12 @@ public class CollegeAdmissionSystem {  //main class
        System.out.println("Select Appropriate Choice");
       
        int choice=sobj.nextInt();
+       logger.info("User selected choice: " + choice);
        switch(choice)
        {
        case 1:
     	    
+    	    logger.info("Register User process started");
     	    System.out.println("Enter username");
     	    sobj.nextLine();
     	    String uname=sobj.nextLine();
@@ -45,16 +65,20 @@ public class CollegeAdmissionSystem {  //main class
     	    b =suser.addUser(model);
     	    if(b)
     	    {
+    	    	logger.info("User successfully added: " + uname);
     	    	System.out.println("User added");
     	    }
     	    else
     	    {
+    	    	logger.warn("Failed to add user: " + uname);
     	    	System.out.println("User not added!");
     	    }
     	    
     	    break;
       
        case 2:
+    	   
+    	    logger.info("User Login process started");
     	    System.out.println("User Login");
     	    System.out.println("Enter username");
     	    sobj.nextLine();
@@ -65,10 +89,12 @@ public class CollegeAdmissionSystem {  //main class
     	    b=suser.login(username, password1);
     	    if(b)
     	    {
+    	    	logger.info("User logged in successfully: " + username + " Role: " + Userrole);
     	    	System.out.println("Login Done!"+" "+Userrole);
     	    	if(Userrole.equalsIgnoreCase("admin"))
     	    	{
-    	    		System.out.println("Admin panel!");//admin panel
+    	    		logger.info("Admin panel accessed by: " + username);
+    	    		System.out.println("Admin panel!");
     	    		//add staff
     	    		//update staff
     	    		//delete staff
@@ -92,11 +118,13 @@ public class CollegeAdmissionSystem {  //main class
     	    			
     	    			System.out.println("Select appropriate option");
     	    			int choice1=sobj.nextInt();
-    	    			
+    	    			logger.info("Admin selected choice: " + choice1);
     	    			
     	    			switch(choice1)
     	    			{
     	    			case 1:
+    	    				
+    	    				logger.info("Admin adding staff");
     	    				System.out.println("Enter username");
     	    	    	    sobj.nextLine();
     	    	    	    String uname1=sobj.nextLine();
@@ -106,16 +134,20 @@ public class CollegeAdmissionSystem {  //main class
     	    	    	    b =suser.addUser(model1);
     	    	    	    if(b)
     	    	    	    {
+    	    	    	    	logger.info("Staff added successfully: " + uname1);
     	    	    	    	System.out.println("User added");
     	    	    	    }
     	    	    	    else
     	    	    	    {
+    	    	    	    	logger.warn("Failed to add staff: " + uname1);
     	    	    	    	System.out.println("User not added!");
     	    	    	    }
     	    	    	    
     	    	    	    break;
     	    	    	    
     	    			case 2:
+    	    				
+    	    				logger.info("Admin updating staff");
     	    				System.out.println("Enter old staff name");
     	    				sobj.nextLine();
     	    				String oldstaffname=sobj.nextLine();
@@ -124,30 +156,36 @@ public class CollegeAdmissionSystem {  //main class
     	    				b=suser.isUpdateStaff(oldstaffname,newstaffname);
     	    				if(b)
     	    				{
+    	    					logger.info("Staff updated successfully: " + oldstaffname + " to " + newstaffname);
     	    					System.out.println("Staff updated!");
     	    				}
     	    				else
     	    				{
+    	    				  logger.warn("Failed to update staff: " + oldstaffname);	
     	    				  System.out.println("There is some problem");
     	    				}
     	    				break;
     	    				
     	    			case 3:
+    	    				logger.info("Admin deleting staff");
     	    				System.out.println("Enter old staff name");
     	    				sobj.nextLine();
     	    				String oldstaff=sobj.nextLine();
     	    				b=suser.isDeleteStaff(oldstaff);
     	    				if(b) 
     	    				{
+    	    					logger.info("Staff deleted successfully: " + oldstaff);
     	    					System.out.println("Staff Delete!");
     	    				}
     	    				else
     	    				{
+    	    				  logger.warn("Failed to delete staff: " + oldstaff);
     	    				  System.out.println("There is some problem");
     	    				}
     	    				break;
     	    				
     	    			case 4:
+    	    				logger.info("Admin updating staff");
     	    				System.out.println("Enter Student Current Name");
     	    				sobj.nextLine();
     	    				String currName = sobj.nextLine();
@@ -157,30 +195,38 @@ public class CollegeAdmissionSystem {  //main class
     	    				b=stud.updateStudent(currName, newName);
     	    				if(b)
     	    				{
+    	    					logger.info("Staff updated successfully: " + currName + " to " +newName);
     	    					System.out.println("Updated");
     	    				}
     	    				else
     	    				{
+    	    					logger.info("failed to Staff upadted staff: " + currName + " to " +newName);
     	    					System.out.println("Not Updated");
     	    				}
     	    			
     	    		      break;
     	    		      
     	    			case 5:
+    	    				
+    	    				 logger.info("Admin deleting student");
     	    		         System.out.println("Enter student name");
     	    		         sobj.nextLine();
     	    		         String studname=sobj.nextLine();
     	    		         b=stud.deleteStudent(studname);
     	    		         if(b)
     	    		         {
+    	    		        	 logger.info("Student deleted successfully: " + studname);
     	    		        	 System.out.println("Student delete");
     	    		         }
     	    		         else
     	    		         {
+    	    		        	 logger.info("Student not deleted successfully: " + studname);
     	    		        	 System.out.println("Student not delete");
     	    		         }
     	    		         break;
     	    			case 6:
+    	    				
+    	    				logger.info("Admin adding the course ");
     	    				System.out.println("Enter Course Name");
     	    		        sobj.nextLine();
     	    		        String courseName = sobj.nextLine();
@@ -190,14 +236,18 @@ public class CollegeAdmissionSystem {  //main class
     	    		        b= courseService.addCourse(course);
     	    		        if(b)
     	    		        {
+    	    		        	logger.info("Student addedd successfully: " + 0 + courseName + fees );
     	    		        	System.out.println("Course Added!");
     	    		        }
     	    		        else
     	    		        {
+    	    		        	logger.info("Student not addedd successfully: " + 0 + courseName + fees );
     	    		        	System.out.println("Course not Added!");
     	    		        }
     	    		        break;
     	    			case 7:
+    	    				
+    	    				logger.info("Admin updating the course ");
     	    				System.out.println("Enter current course name");
     	    				sobj.nextLine();
     	    				String currentName=sobj.nextLine();
@@ -209,39 +259,49 @@ public class CollegeAdmissionSystem {  //main class
     	    		        b= courseService.updateCourse(currentName, newCourseName, newFee);
     	    		        if(b)
     	    		        {
+    	    		        	logger.info("course updated successfully: " + currentName +  newCourseName +newFee);
     	    		        	System.out.println("course updated successfully");
     	    		        }
     	    		        else
     	    		        {
+    	    		        	logger.info("course  not updated successfully: " + currentName +  newCourseName +newFee);
     	    		        	System.out.println("course not updated");
     	    		        }
     	    		         break;
     	    		         
     	    			case 8:
+    	    				
+    	    				logger.info("Admin delete the course ");
     	    				System.out.println("Enter Course name");
     	    				sobj.nextLine();
     	    				String coursename=sobj.nextLine();
     	    				b=courseService.deleteCourse(coursename);
     	    				if(b)
     	    				{
+    	    					logger.info("course delete successfully: " + coursename);
     	    					 System.out.println("course delete");
     	    				}
     	    				else
     	    				{
+    	    					logger.info("course not delete successfully: " + coursename);
     	    					 System.out.println("course not delete");
     	    				}
     	    				
     	    			case 9:
+    	    				
+    	    				logger.info("Admin delete the admission");
     	    				System.out.println("Enter name of student which admission do you want to delete");
     	    				sobj.nextLine();
     	    				String studname1=sobj.nextLine();
     	    				b=admissionservice.isdeleteAdmission(studname1);
     	    				if(b)
     	    				{
+    	    					logger.info("admission delete successfully: " + studname1);
     	    					System.out.println("Admission delete!");
     	    				}
     	    				else
     	    				{
+    	    					logger.info("admission not delete successfully: " + studname1);
     	    					System.out.println("There is some problem!");
     	    				}
     	    				
@@ -251,7 +311,8 @@ public class CollegeAdmissionSystem {  //main class
     	    	}
     	    	    else
     	    	    {
-    	    		System.out.println("Staff panel"); 
+    	    	    	 logger.info("Staff panel accessed by: " + username);
+    	    		     System.out.println("Staff panel"); 
     	    		
     	    		//add student
     	    		//view student
@@ -272,6 +333,8 @@ public class CollegeAdmissionSystem {  //main class
     	    			switch(choice1)
     	    			{
     	    			case 1:
+    	    				
+    	    				  logger.info("staff adding the student ");
     	    				  System.out.println("Enter name of Student");
     	    				  sobj.nextLine();
     	    				  String sname=sobj.nextLine();
@@ -293,15 +356,19 @@ public class CollegeAdmissionSystem {  //main class
     	    				  boolean b2=stud.addStudent(model1,amount_paid,course_name);
     	    				  if(b2)
     	    				  {
+    	    					  logger.info("student add successfully: " +model1 + amount_paid +course_name);
     	    					  System.out.println("Student Added!");
     	    				  }
     	    				  else
     	    				  {
+    	    					  logger.info("student not add successfully: " +model1 + amount_paid +course_name);
     	    					  System.out.println("Not added!");
     	    				  }
     	    				  
     	    				break;
     	    			case 2:
+    	    				
+    	    				logger.info("staff view all the students ");
     	    				System.out.println("All Students");
     	    				List<StudentModel> ViewAllStudents=stud.viewAllStudents();
     	    			    if(ViewAllStudents!=null)
@@ -315,6 +382,8 @@ public class CollegeAdmissionSystem {  //main class
     	    			
     	    			
     	    			case 3:
+    	    				
+    	    				logger.info("staff view all the courses ");
     	    				System.out.println("All Courses");
     	    				List<CourseModel> courses= courseService.viewAllCourses();
     	    				if(courses!=null)
@@ -325,6 +394,8 @@ public class CollegeAdmissionSystem {  //main class
     	    			}		
     	    			break;	
     	    			case 4:
+    	    				
+    	    				logger.info("staff add the admissions ");
     	    				System.out.println("Enter student name");
     	    				sobj.nextLine();
     	    				String studename=sobj.nextLine();
@@ -335,10 +406,12 @@ public class CollegeAdmissionSystem {  //main class
 							b=admissionservice.addAdmission(studename,cname,date);
     	    				if(b)
     	    				{
+    	    					logger.info("admission add successfully: " +studename + cname + date);
     	    					System.out.println("Admission addedd successfully....");
     	    				}
     	    				else
     	    				{
+    	    					logger.info("addmission not add successfully: " +studename + cname + date);
     	    					System.out.println("Admission not addedd successfully....");
     	    				}
     	    				break;
@@ -353,11 +426,14 @@ public class CollegeAdmissionSystem {  //main class
     	    }
     	    else
     	    {
+    	    	logger.warn("Login failed for user: " + username);
     	    	System.out.println("Login Fail!");
     	    }
     	    
             break;
        case 3:
+    	   
+       logger.info("Student Login process started");
        System.out.println("Student Login");
        System.out.println("Enter student name");
        sobj.nextLine();
@@ -367,6 +443,7 @@ public class CollegeAdmissionSystem {  //main class
        b = stud.login(username, password1);
        if(b)
        {
+    	   logger.info("Student logged in successfully: " + username);
     	   System.out.println("Student Login");
     	   do
     	   {
@@ -376,9 +453,11 @@ public class CollegeAdmissionSystem {  //main class
     		   
     		   System.out.println("Select choice");
     		   choice=sobj.nextInt();
+    		   logger.info("Student selected choice: " + choice);
     		   switch(choice)
     		   {
     		   case 1:
+    			   logger.info("Student viewing courses");
     			   System.out.println("All Courses");
    				List<CourseModel> courses= courseService.viewAllCourses();
    				if(courses!=null)
@@ -387,34 +466,47 @@ public class CollegeAdmissionSystem {  //main class
                            System.out.println(c.getCid() + " " + c.getCname() + " " + c.getFees());
    				     }
    				}
+   				else
+   				{
+   					logger.warn("No courses available");
+   				}
     			   break;
     		   case 2:
+    			   logger.info("Student checking admission status");
     			   System.out.println("Enter your name:");
     			   sobj.nextLine();
                    String studentName = sobj.nextLine();
                    String admission_status=admissionservice.checkAdmissionStatus(studentName);
                    if (b) {
+                	   logger.info("Admission status for " + studentName + ": " + admission_status);
                        System.out.println("Admission Status: "+admission_status);
                    } else {
+                	   logger.warn("No admission record found for: " + studentName);
                        System.out.println("No admission record found.");
                    }
     			   
     			   break;
     			   
     		   case 3:
+    			   
+    			   logger.info("Student checking fee status");
     			   System.out.println("Enter your name:");
     			    sobj.nextLine();
     			    String studentNameForFee = sobj.nextLine();
     			     b = fservice.checkFeeStatus(studentNameForFee);
 
     			    if (b) {
+    			    	 logger.info("Pending fee status for student: " + studentNameForFee);
     			        System.out.println("Fee Status for " +"pending");
     			    } else {
+    			    	 logger.info("Fee paid status for student: " + studentNameForFee);
     			        System.out.println("Fees paid");
     			    }
     			   
     			   break;
     			default:
+    				
+    				logger.warn("Student selected an invalid choice: " + choice);
     				System.out.println("Correct choice!");
     		   }
     		   
@@ -422,14 +514,18 @@ public class CollegeAdmissionSystem {  //main class
        }
        else
        {
+    	   logger.warn("Student login failed for: " + username);
     	   System.out.println("there is some problem");
        }
     	
     	break;   
        case 4:
+    	    logger.info("Application exited by user");
     	    System.exit(0);
     	   
        default:
+    	   
+    	   logger.warn("User selected an invalid choice: " + choice);
     	   System.out.println("Select approprite choice!");
        }
 	}

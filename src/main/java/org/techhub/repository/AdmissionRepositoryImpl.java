@@ -4,14 +4,20 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+import org.techhub.clgapp.CollegeAdmissionSystem;
 import org.techhub.model.AdmissionModel;
 
 public class AdmissionRepositoryImpl extends DBSTATE implements AdmissionRepository {
+	
+	private static Logger logger=Logger.getLogger(AdmissionRepositoryImpl.class);
 
 	int value=0;
 	@Override
 	public boolean addAdmission(String studename,String cname,String  date) {
 		// TODO Auto-generated method stub
+		
+      logger.info("Attempting to add admission for student: " + studename + ", course: " + cname);
 		
 		try {
 			stmt = conn.prepareStatement(
@@ -36,18 +42,24 @@ public class AdmissionRepositoryImpl extends DBSTATE implements AdmissionReposit
                 value = stmt.executeUpdate();
             }
            
+            logger.info("Admission added successfully for student: " + studename);
             return value>0?true:null;
+            
+           
             
 		}
 		catch(Exception e)
 		{
+			 logger.error("Error while adding admission for student: " + studename, e);
 			System.out.println("error is"+e);
+			
 			return false;
 		}
 		
 	}
 	@Override
 	public boolean isdeleteAdmission(String studname) {
+		logger.info("Attempting to delete admission for student: " + studname);
 		try
 		{
 			stmt=conn.prepareStatement("select sid from student where name=?");
@@ -67,18 +79,21 @@ public class AdmissionRepositoryImpl extends DBSTATE implements AdmissionReposit
 					value=stmt.executeUpdate();
 				}
 			}
+			logger.info("Admission deleted successfully for student: " + studname);
 			return value>0?true:null;
 		}catch(Exception e)
 		{
+			logger.error("Error while deleting admission for student: " + studname, e);
 			System.out.println("Error is"+e);
 			return false;
+			
 		}
 	}
 	@Override
 	public String checkAdmissionStatus(String studentName) {
 		// TODO Auto-generated method stub
 		
-		
+		 logger.info("Checking admission status for student: " + studentName);
 	    try {
 	        // Step 1: Get the student ID based on student name
 	        stmt = conn.prepareStatement("SELECT sid FROM student WHERE name = ?");
@@ -108,8 +123,12 @@ public class AdmissionRepositoryImpl extends DBSTATE implements AdmissionReposit
 	            }
 	            
 	        }
+	        
+	        logger.info("Admission status for student " + studentName + ": " + status);
 	        return status;
 	    } catch (SQLException e) {
+	    	
+	    	logger.error("Error while checking admission status for student: " + studentName, e);
 	        System.out.println("Error: " + e.getMessage());
 	        return null;
 	    }

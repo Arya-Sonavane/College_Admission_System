@@ -1,9 +1,15 @@
 package org.techhub.repository;
 
+import org.apache.log4j.Logger;
+
 public class FeesRepositoryImpl extends DBSTATE implements FeesRepository{
+	
+	private static Logger logger=Logger.getLogger(FeesRepositoryImpl.class);
 
 	@Override
 	public boolean checkFeeStatus(String studentName) {
+		
+		
 		try
 		{
 			    stmt = conn.prepareStatement("SELECT sid FROM student WHERE name = ?");
@@ -32,6 +38,8 @@ public class FeesRepositoryImpl extends DBSTATE implements FeesRepository{
 	            
 		}catch(Exception e)
 		{
+			
+			 logger.error("Error occurred while checking fee status for student: " + studentName, e);
 			System.out.println("Error is"+e);
 			return false;
 		}
