@@ -38,5 +38,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/hp/OneDrive/Desktop/MySQL/mysql-connector-java-8.0.11.jar"/>
+	<classpathentry kind="lib" path="C:/Users/hp/OneDrive/Desktop/Giri tech notes/log4j-1.2.17.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
