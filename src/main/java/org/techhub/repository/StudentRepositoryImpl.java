@@ -21,7 +21,24 @@ public class StudentRepositoryImpl extends DBSTATE implements StudentRepository 
 		
 	    try {
 	    	
+	    	 // Validate contact number
+	        String contact = String.valueOf(model.getContact());
+	        if (contact.length() != 10 || !contact.matches("\\d+")) {
+	            logger.warn("Invalid contact number: " + contact);
+	            System.out.println("Invalid contact number! It must be exactly 10 digits and contain only numbers.");
+	            return false;
+	        }
 	    	 
+	     // Validate email
+	        String email = model.getEmail();
+	        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
+	        if (!email.matches(emailRegex)) {
+	            logger.warn("Invalid email: " + email);
+	            System.out.println("Invalid email format! Please provide a valid email.");
+	            return false;
+	        }
+	        
+	        
 	    	stmt=conn.prepareStatement("select cid from course where cname=?");
 	    	stmt.setString(1,course_name);
 	    	rs=stmt.executeQuery();
@@ -34,7 +51,7 @@ public class StudentRepositoryImpl extends DBSTATE implements StudentRepository 
 	        stmt = conn.prepareStatement("INSERT INTO student (name, email, contact, address, date_of_registration,cid,password) VALUES (?, ?, ?, ?, CURRENT_DATE,?,?)");
 	        stmt.setString(1, model.getSname());
 	        stmt.setString(2, model.getEmail());
-	        stmt.setInt(3, model.getContact());
+	        stmt.setLong(3, model.getContact());
 	        stmt.setString(4, model.getAddress());
 	        stmt.setInt(5, course_id);
 	        stmt.setString(6, model.getPassword());
@@ -49,10 +66,28 @@ public class StudentRepositoryImpl extends DBSTATE implements StudentRepository 
 	            if (rs.next()) {
 	                int sid = rs.getInt("sid");
 
+	                stmt=conn.prepareStatement("select fee from course where cname=?");
+	                stmt.setString(1, course_name);
+	                rs=stmt.executeQuery();
+	                int total_fees=0;
+	                String status_of_Admission="";
+	                while(rs.next())
+	                {
+	                	total_fees=rs.getInt(1);
+	                }
+	                if(total_fees==amount_paid)
+	                {
+	                	status_of_Admission="Confirm";
+	                }
+	                else
+	                {
+	                	status_of_Admission="prending";
+	                }
 	                
-	                stmt = conn.prepareStatement("INSERT INTO admission (sid, cid, admission_date, status) VALUES (?, ?, CURRENT_DATE, 'pending')");
+	                stmt = conn.prepareStatement("INSERT INTO admission (sid, cid, admission_date, status) VALUES (?, ?, CURRENT_DATE,?)");
 	                stmt.setInt(1, sid);
 	                stmt.setInt(2, 101); 
+	                stmt.setString(3,status_of_Admission);
 	                int admissionResult = stmt.executeUpdate();
 
 	                if (admissionResult > 0) {
@@ -135,7 +170,7 @@ public class StudentRepositoryImpl extends DBSTATE implements StudentRepository 
 			rs=stmt.executeQuery();
 			while(rs.next())
 			{
-				StudentModel model=new StudentModel(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getInt(4),rs.getString(5),rs.getString(6));
+				StudentModel model=new StudentModel(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getLong(4),rs.getString(5),rs.getString(6));
 				allStudent.add(model);
 			}
 			

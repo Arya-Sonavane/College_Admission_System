@@ -6,7 +6,7 @@ import org.techhub.model.AdmissionModel;
 
 public interface AdmissionRepository {
 	
-	public boolean addAdmission(String studename,String cname,String  date);
+	public boolean addAdmission(String studename,String  date);
 	public boolean isdeleteAdmission(String studname);
 	public String checkAdmissionStatus(String studentName);
 

@@ -11,5 +11,6 @@ public interface userService {
 	public boolean login(String username,String password);
 	public boolean isUpdateStaff(String oldstaffname,String newstaffname);
 	public boolean isDeleteStaff(String oldstaffname);
+	public UserModel getUserByUsername(String uname);
 
 }

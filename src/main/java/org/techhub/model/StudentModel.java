@@ -21,10 +21,10 @@ public class StudentModel {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public int getContact() {
+	public long getContact() {
 		return contact;
 	}
-	public void setContact(int contact) {
+	public void setContact(long contact) {
 		this.contact = contact;
 	}
 	public String getAddress() {
@@ -35,7 +35,7 @@ public class StudentModel {
 	}
 	String sname;
 	String email;
-	int contact;
+	long contact;
 	String address;
 	String password;
 	public String getPassword() {
@@ -49,7 +49,7 @@ public class StudentModel {
 		
 	}
 	
-	public StudentModel(int sid,String sname,String email,int contact,String address,String password)
+	public StudentModel(int sid,String sname,String email,long contact,String address,String password)
 	{
 		this.sid=sid;
 		this.sname=sname;
@@ -57,6 +57,15 @@ public class StudentModel {
 		this.contact=contact;
 		this.address=address;
 		this.password=password;
+	}
+	
+	public StudentModel(int sid,String sname,String email,long contact,String address)
+	{
+		this.sid=sid;
+		this.sname=sname;
+		this.email=email;
+		this.contact=contact;
+		this.address=address;
 	}
 
 }

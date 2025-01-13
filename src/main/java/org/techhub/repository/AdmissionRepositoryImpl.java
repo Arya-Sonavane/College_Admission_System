@@ -13,21 +13,25 @@ public class AdmissionRepositoryImpl extends DBSTATE implements AdmissionReposit
 	private static Logger logger=Logger.getLogger(AdmissionRepositoryImpl.class);
 
 	int value=0;
+
 	@Override
-	public boolean addAdmission(String studename,String cname,String  date) {
+	public boolean addAdmission(String studename,String  date) {
 		// TODO Auto-generated method stub
 		
-      logger.info("Attempting to add admission for student: " + studename + ", course: " + cname);
+      logger.info("Attempting to add admission for student: " + studename + ", course: " );
 		
 		try {
+			
 			stmt = conn.prepareStatement(
 				    "SELECT " +
 				    "    (SELECT sid FROM student WHERE name = ?) AS student_id, " +
-				    "    (SELECT cid FROM course WHERE cname = ?) AS course_id"
+				    "    (SELECT cid FROM student WHERE name = ?) AS course_id"
 				);
 
-            stmt.setString(1,studename); 
-            stmt.setString(2, cname);
+            stmt.setString(1,studename);  
+            stmt.setString(2, studename);
+            //stmt.setString(3, date);
+            //stmt.setString(4,"pending");
             rs=stmt.executeQuery();
             while(rs.next())
             {
@@ -57,6 +61,7 @@ public class AdmissionRepositoryImpl extends DBSTATE implements AdmissionReposit
 		}
 		
 	}
+
 	@Override
 	public boolean isdeleteAdmission(String studname) {
 		logger.info("Attempting to delete admission for student: " + studname);
