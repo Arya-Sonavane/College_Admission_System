@@ -19,7 +19,7 @@ public class FeesRepositoryImpl extends DBSTATE implements FeesRepository{
 	            while(rs.next())
 	            {
 	            	int sid=rs.getInt(1);
-	            	stmt = conn.prepareStatement("SELECT aid FROM admission WHERE pid = ?");
+	            	stmt = conn.prepareStatement("SELECT aid FROM admission WHERE sid = ?");
 		            stmt.setInt(1, sid);
 		            rs=stmt.executeQuery();
 		            while(rs.next())
@@ -33,7 +33,7 @@ public class FeesRepositoryImpl extends DBSTATE implements FeesRepository{
 		            	
 		            }
 	            }
-	           return remaning_fee>0?true:null;
+	           return remaning_fee>0?true:false;
 	            
 	            
 		}catch(Exception e)

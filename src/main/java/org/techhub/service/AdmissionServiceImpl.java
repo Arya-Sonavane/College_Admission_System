@@ -1,4 +1,6 @@
 package org.techhub.service;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import java.util.List;
 
@@ -6,12 +8,14 @@ import org.techhub.model.AdmissionModel;
 import org.techhub.repository.AdmissionRepository;
 import org.techhub.repository.AdmissionRepositoryImpl;
 
+
 public class AdmissionServiceImpl implements AdmissionService {
 	
-	AdmissionRepository admissionRepo = new AdmissionRepositoryImpl();
+	AdmissionRepositoryImpl admissionRepo = new AdmissionRepositoryImpl();
+	
 
-	public boolean addAdmission(String studename, String cname, String date) {
-		return admissionRepo.addAdmission(studename, cname, date);
+	public boolean addAdmission(String studename, String date) {
+		return admissionRepo.addAdmission(studename, date);
 	}
 
 	@Override

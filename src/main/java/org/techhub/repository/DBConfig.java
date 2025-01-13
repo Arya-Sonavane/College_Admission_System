@@ -15,7 +15,6 @@ public class DBConfig {
 
 	protected DBConfig() {
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
 			File f = new File("");
 			String path = f.getAbsolutePath();
 			FileInputStream inputStream = new FileInputStream(path + "\\src\\main\\resources\\dbconfig.properties");
@@ -29,6 +28,7 @@ public class DBConfig {
 			System.out.println(driverClassName+"\t"+username+"\t"+password+"\t"+url);
 		
 			
+			 //get actual connection
 			 conn = DriverManager.getConnection(url, username, password);
 
 		} catch (Exception ex) {

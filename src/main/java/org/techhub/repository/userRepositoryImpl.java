@@ -61,20 +61,15 @@ public class userRepositoryImpl extends DBSTATE implements userRepository {
 	public boolean login(String username, String password) {
 		try
 		{
-			stmt=conn.prepareStatement("select * from user where uname=? and password=?");
-			stmt.setString(1, username);
-			stmt.setString(2, password);
-			rs=stmt.executeQuery();
-			while(rs.next())
-			{
-				logger.info("Login successful for user: " + username);
-				return true;
-			}
-			
+			UserModel user = this.getUserByUsername(username); // Fetch user by exact username match
+		    if (user != null && user.getPassword().equals(password)) {
+		        return true;
+		    }
+		    return false; 
 		}catch(Exception e)
 		{
 			 logger.error("Error during login for user: " + username, e);
-			System.out.println("Error is"+e);
+			 System.out.println("Error is"+e);
 			
 		}
 		 logger.warn("Login failed for user: " + username);
@@ -119,6 +114,30 @@ public class userRepositoryImpl extends DBSTATE implements userRepository {
 			return false;	
 		}
 	}
+
+	@Override
+	public UserModel getUserByUsername(String uname) {
+	    try {
+	        UserModel user = null;
+	        stmt = conn.prepareStatement("SELECT * FROM user WHERE BINARY uname = ?"); // BINARY ensures case sensitivity
+	        stmt.setString(1, uname);
+	        rs = stmt.executeQuery();
+	        if (rs.next()) {
+	            user = new UserModel(
+	                rs.getInt(1),  // uid
+	                rs.getString(2), // uname
+	                rs.getString(3), // password
+	                rs.getString(4)  // role
+	            );
+	        }
+	        return user;
+	    } catch (Exception e) {
+	        logger.error("Error fetching user by username: " + uname, e);
+	        System.out.println("Error is: " + e);
+	        return null;
+	    }
+	}
+
 
 
 }

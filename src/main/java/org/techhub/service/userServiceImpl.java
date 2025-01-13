@@ -34,6 +34,12 @@ public class userServiceImpl  implements userService{
 	public boolean isDeleteStaff(String oldstaffname) {
 		return urepo.isDeleteStaff(oldstaffname);
 	}
+
+	@Override
+	public UserModel getUserByUsername(String uname) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	
